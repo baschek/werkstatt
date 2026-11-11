@@ -22,7 +22,12 @@ export function useSync(): SyncState {
 
 export function useSearch(query: string, status: ItemStatus | null): SearchResult[] {
   const cat = useCatalog()
-  return useMemo(() => search(cat, query, { status, limit: 200, types: status || !query.trim() ? ['item'] : ['item', 'place', 'machine'] }).results, [cat, query, status])
+  return useMemo(() => {
+    const all = search(cat, query, { status, limit: 200, types: status || !query.trim() ? ['item'] : ['item', 'place', 'machine'] }).results
+    // Dinge zuerst (wie im Prototyp), dann Maschinen, dann Orte mit Code; Fächer ohne Code sind nur Rauschen
+    const rank = { item: 0, machine: 1, place: 2 } as const
+    return all.filter((r) => r.kind !== 'place' || cat.places.get(r.id)?.data.human_id).sort((a, b) => rank[a.kind] - rank[b.kind])
+  }, [cat, query, status])
 }
 
 export function useMedia(q: string): boolean {
