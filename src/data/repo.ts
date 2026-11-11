@@ -31,7 +31,7 @@ export class Repo {
   private constructor(private db: IDBPDatabase | null) {}
 
   static async open(name = 'werkstatt'): Promise<Repo> {
-    let db: IDBPDatabase | null = null
+    let db: IDBPDatabase | null
     try {
       db = await openDB(name, 1, {
         upgrade(d) {
