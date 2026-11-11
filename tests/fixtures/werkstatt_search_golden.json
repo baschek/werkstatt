@@ -1,0 +1,930 @@
+{
+ "version": 1,
+ "about": "Shared golden cases of the Werkstatt search (docs/werkstatt-sync-protocol.md, 'Search algorithm'). Server (tests/test_werkstatt_search.py) and PWA run the same cases. 'expect' keys: first (id of result 1), ordered (these ids are results 1..n in this order), exactly (the result ids are exactly this list in this order), exactly_unordered (same set), contains / absent (ids in or not in the results), empty (no results), all_partial (every result is partial), unresolved (filters that did not resolve). Results are requested with limit 50.",
+ "fold_cases": [
+  [
+   "Fräser",
+   "fraeser"
+  ],
+  [
+   "Größe",
+   "groesse"
+  ],
+  [
+   "Café",
+   "cafe"
+  ],
+  [
+   "ÄÖÜ",
+   "aeoeue"
+  ],
+  [
+   "R2-K5",
+   "r2-k5"
+  ]
+ ],
+ "token_cases": [
+  [
+   "R2-K5 (links)",
+   [
+    "r2",
+    "k5",
+    "links"
+   ]
+  ],
+  [
+   "  Lötzinn 0,5mm ",
+   [
+    "loetzinn",
+    "0",
+    "5mm"
+   ]
+  ],
+  [
+   "",
+   []
+  ],
+  [
+   "Heißkleber",
+   [
+    "heisskleber"
+   ]
+  ]
+ ],
+ "edit_distance_cases": [
+  [
+   "akku",
+   "akuk",
+   2,
+   1
+  ],
+  [
+   "kitten",
+   "sitting",
+   5,
+   3
+  ],
+  [
+   "abc",
+   "abd",
+   1,
+   1
+  ],
+  [
+   "abcdef",
+   "uvwxyz",
+   2,
+   3
+  ],
+  [
+   "",
+   "abc",
+   2,
+   3
+  ],
+  [
+   "ab",
+   "ba",
+   1,
+   1
+  ]
+ ],
+ "match_quality_cases": [
+  [
+   "akku",
+   "akku",
+   1.0
+  ],
+  [
+   "ak",
+   "akku",
+   0.8
+  ],
+  [
+   "a",
+   "akku",
+   0.0
+  ],
+  [
+   "rauber",
+   "akkuschrauber",
+   0.6
+  ],
+  [
+   "akkus",
+   "akku",
+   0.5
+  ],
+  [
+   "akuk",
+   "akku",
+   0.5
+  ],
+  [
+   "akkuschruber",
+   "akkuschrauber",
+   0.5
+  ],
+  [
+   "akuschrauer",
+   "akkuschrauber",
+   0.4
+  ],
+  [
+   "abc",
+   "abd",
+   0.0
+  ],
+  [
+   "xyz",
+   "akku",
+   0.0
+  ]
+ ],
+ "stopwords": [
+  "a",
+  "an",
+  "are",
+  "auf",
+  "das",
+  "dem",
+  "den",
+  "der",
+  "die",
+  "ein",
+  "eine",
+  "einen",
+  "for",
+  "hab",
+  "habe",
+  "ich",
+  "im",
+  "in",
+  "is",
+  "ist",
+  "liegen",
+  "liegt",
+  "mein",
+  "meine",
+  "meinen",
+  "mit",
+  "my",
+  "nach",
+  "oder",
+  "of",
+  "sind",
+  "suche",
+  "the",
+  "to",
+  "und",
+  "von",
+  "where",
+  "wo"
+ ],
+ "synonym_seed": [
+  [
+   "Akku",
+   "Akkus",
+   "Batterie",
+   "Batterien",
+   "LiPo",
+   "Accu",
+   "Akkupack",
+   "Battery",
+   "Batteries"
+  ],
+  [
+   "Schraube",
+   "Schrauben",
+   "Screw",
+   "Screws"
+  ],
+  [
+   "Mutter",
+   "Muttern",
+   "Nut",
+   "Nuts"
+  ],
+  [
+   "Unterlegscheibe",
+   "Unterlegscheiben",
+   "Washer",
+   "Washers"
+  ],
+  [
+   "Filament",
+   "Filamente",
+   "PLA",
+   "PETG",
+   "TPU"
+  ],
+  [
+   "Fräser",
+   "Schaftfräser",
+   "Endmill",
+   "End Mill",
+   "Milling Cutter"
+  ],
+  [
+   "Bohrer",
+   "Spiralbohrer",
+   "Drill",
+   "Drill Bit"
+  ],
+  [
+   "Akkuschrauber",
+   "Akkubohrer",
+   "Cordless Drill"
+  ],
+  [
+   "Schraubendreher",
+   "Schraubenzieher",
+   "Screwdriver"
+  ],
+  [
+   "Zange",
+   "Zangen",
+   "Pliers"
+  ],
+  [
+   "Kabel",
+   "Leitung",
+   "Cable",
+   "Wire"
+  ],
+  [
+   "Kleber",
+   "Klebstoff",
+   "Glue",
+   "Adhesive"
+  ],
+  [
+   "Klebeband",
+   "Tape",
+   "Gewebeband"
+  ],
+  [
+   "Säge",
+   "Sägeblatt",
+   "Saw"
+  ],
+  [
+   "Lötzinn",
+   "Lötdraht",
+   "Solder"
+  ],
+  [
+   "Netzteil",
+   "Ladegerät",
+   "Charger",
+   "Power Supply"
+  ],
+  [
+   "Sicherung",
+   "Sicherungen",
+   "Fuse",
+   "Fuses"
+  ],
+  [
+   "Schalter",
+   "Taster",
+   "Switch"
+  ],
+  [
+   "Lüfter",
+   "Ventilator",
+   "Fan"
+  ],
+  [
+   "Werkzeug",
+   "Werkzeuge",
+   "Tool",
+   "Tools"
+  ]
+ ],
+ "weights": {
+  "name": 10,
+  "human_id": 10,
+  "alias": 8,
+  "model": 6,
+  "tag": 5,
+  "category": 4,
+  "spec": 3,
+  "notes": 2,
+  "place": 2,
+  "ancestor": 1,
+  "synonym_factor": 0.9,
+  "name_equals_bonus": 10,
+  "name_phrase_bonus": 5,
+  "code_bonus": 15
+ },
+ "catalog": {
+  "places": [
+   {
+    "id": "p-keller",
+    "data": {
+     "name": "Keller",
+     "kind": "zone"
+    }
+   },
+   {
+    "id": "p-r2",
+    "data": {
+     "name": "Regal R2",
+     "parent_id": "p-keller",
+     "human_id": "R2",
+     "kind": "shelf"
+    }
+   },
+   {
+    "id": "p-r2k5",
+    "data": {
+     "name": "Kiste K5",
+     "parent_id": "p-r2",
+     "human_id": "R2-K5",
+     "kind": "box"
+    }
+   },
+   {
+    "id": "p-r2k6",
+    "data": {
+     "name": "Kiste K6",
+     "parent_id": "p-r2",
+     "human_id": "R2-K6",
+     "kind": "box",
+     "tags": [
+      "elektronik"
+     ]
+    }
+   },
+   {
+    "id": "p-r3",
+    "data": {
+     "name": "Regal R3",
+     "parent_id": "p-keller",
+     "human_id": "R3",
+     "kind": "shelf"
+    }
+   },
+   {
+    "id": "p-r3s1",
+    "data": {
+     "name": "Schublade Schrauben",
+     "parent_id": "p-r3",
+     "human_id": "R3-S1",
+     "kind": "drawer"
+    }
+   },
+   {
+    "id": "p-wb",
+    "data": {
+     "name": "Werkbank",
+     "parent_id": "p-keller",
+     "human_id": "WB",
+     "kind": "zone"
+    }
+   }
+  ],
+  "categories": [
+   {
+    "id": "c-akku",
+    "data": {
+     "name": "Akku",
+     "synonyms": [
+      "Energiespeicher"
+     ],
+     "spec_fields": [
+      {
+       "key": "capacity_mah",
+       "label": "Kapazität",
+       "type": "number",
+       "unit": "mAh"
+      },
+      {
+       "key": "cells",
+       "label": "Zellen",
+       "type": "number"
+      }
+     ]
+    }
+   },
+   {
+    "id": "c-schrauben",
+    "data": {
+     "name": "Schrauben"
+    }
+   },
+   {
+    "id": "c-werkzeug",
+    "data": {
+     "name": "Werkzeug"
+    }
+   },
+   {
+    "id": "c-elektro",
+    "data": {
+     "name": "Elektrowerkzeug",
+     "parent_id": "c-werkzeug",
+     "synonyms": [
+      "Maschine"
+     ]
+    }
+   }
+  ],
+  "items": [
+   {
+    "id": "i-lipo",
+    "data": {
+     "name": "LiPo 3S 2200 mAh",
+     "place_id": "p-r2k6",
+     "category_id": "c-akku",
+     "tags": [
+      "rc",
+      "lipo"
+     ],
+     "specs": {
+      "capacity_mah": 2200,
+      "cells": 3
+     },
+     "quantity": 4
+    }
+   },
+   {
+    "id": "i-akkuschrauber",
+    "data": {
+     "name": "Makita Akkuschrauber 18V",
+     "place_id": "p-wb",
+     "category_id": "c-elektro",
+     "aliases": [
+      "Bohrschrauber"
+     ],
+     "tags": [
+      "makita"
+     ]
+    }
+   },
+   {
+    "id": "i-akkupack",
+    "data": {
+     "name": "Makita Akku 18V 5Ah",
+     "place_id": "p-wb",
+     "category_id": "c-akku"
+    }
+   },
+   {
+    "id": "i-fraeser",
+    "data": {
+     "name": "Schaftfräser 6 mm HM",
+     "place_id": "p-r2k5",
+     "category_id": "c-werkzeug",
+     "notes": "für Aluminium"
+    }
+   },
+   {
+    "id": "i-m4",
+    "data": {
+     "name": "Zylinderschrauben M4x16",
+     "place_id": "p-r3s1",
+     "category_id": "c-schrauben",
+     "quantity": 200
+    }
+   },
+   {
+    "id": "i-m3",
+    "data": {
+     "name": "Linsenkopfschrauben M3x10",
+     "place_id": "p-r3s1",
+     "quantity": 150
+    }
+   },
+   {
+    "id": "i-pla",
+    "data": {
+     "name": "PLA Filament schwarz 1kg",
+     "place_id": "p-r2"
+    }
+   },
+   {
+    "id": "i-multimeter",
+    "data": {
+     "name": "Multimeter Fluke 117",
+     "place_id": "p-r2k6",
+     "status": "lent",
+     "lent_to": "Papa"
+    }
+   },
+   {
+    "id": "i-loetkolben",
+    "data": {
+     "name": "Lötkolben Weller"
+    }
+   },
+   {
+    "id": "i-klebepistole",
+    "data": {
+     "name": "Heißklebepistole",
+     "place_id": "p-wb",
+     "status": "in_use",
+     "in_use_note": "am Laptop"
+    }
+   }
+  ],
+  "machines": [
+   {
+    "id": "m-prusa",
+    "data": {
+     "name": "Prusa MK4",
+     "model": "MK4",
+     "place_id": "p-wb"
+    }
+   },
+   {
+    "id": "m-fraese",
+    "data": {
+     "name": "CNC Fräse",
+     "model": "3018",
+     "place_id": "p-wb"
+    }
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "prefix, synonyms and category rank",
+   "query": "akku",
+   "expect": {
+    "ordered": [
+     "i-akkupack",
+     "i-lipo",
+     "i-akkuschrauber"
+    ]
+   }
+  },
+  {
+   "name": "synonym Batterie finds Akku and LiPo",
+   "query": "batterie",
+   "expect": {
+    "contains": [
+     "i-akkupack",
+     "i-lipo"
+    ],
+    "absent": [
+     "i-m4"
+    ]
+   }
+  },
+  {
+   "name": "umlaut written as ae",
+   "query": "fraeser",
+   "expect": {
+    "ordered": [
+     "i-fraeser",
+     "m-fraese"
+    ]
+   }
+  },
+  {
+   "name": "umlaut typed",
+   "query": "Fräser",
+   "expect": {
+    "first": "i-fraeser"
+   }
+  },
+  {
+   "name": "multi-word synonym end mill",
+   "query": "end mill",
+   "expect": {
+    "first": "i-fraeser"
+   }
+  },
+  {
+   "name": "place code is exact",
+   "query": "R2-K5",
+   "expect": {
+    "ordered": [
+     "p-r2k5",
+     "i-fraeser"
+    ],
+    "absent": [
+     "p-r2k6",
+     "p-r2"
+    ]
+   }
+  },
+  {
+   "name": "place code without dash",
+   "query": "r2k5",
+   "expect": {
+    "first": "p-r2k5"
+   }
+  },
+  {
+   "name": "box name finds the box and its contents",
+   "query": "kiste k6",
+   "expect": {
+    "ordered": [
+     "p-r2k6"
+    ],
+    "contains": [
+     "i-lipo",
+     "i-multimeter"
+    ],
+    "absent": [
+     "i-fraeser"
+    ]
+   }
+  },
+  {
+   "name": "typo with one missing letter",
+   "query": "akkuschruber",
+   "expect": {
+    "exactly": [
+     "i-akkuschrauber"
+    ]
+   }
+  },
+  {
+   "name": "typo in a long word",
+   "query": "multimetr",
+   "expect": {
+    "first": "i-multimeter"
+   }
+  },
+  {
+   "name": "stop words are dropped",
+   "query": "wo ist der Lötkolben",
+   "expect": {
+    "first": "i-loetkolben"
+   }
+  },
+  {
+   "name": "upper case and missing umlaut",
+   "query": "LOTKOLBEN",
+   "expect": {
+    "first": "i-loetkolben"
+   }
+  },
+  {
+   "name": "substring of a compound word",
+   "query": "schraube",
+   "expect": {
+    "contains": [
+     "i-m3",
+     "i-m4"
+    ],
+    "absent": [
+     "i-lipo",
+     "i-pla"
+    ]
+   }
+  },
+  {
+   "name": "category synonym",
+   "query": "maschine",
+   "expect": {
+    "contains": [
+     "i-akkuschrauber"
+    ],
+    "absent": [
+     "i-fraeser"
+    ]
+   }
+  },
+  {
+   "name": "category synonym reaches items of the category",
+   "query": "energiespeicher",
+   "expect": {
+    "contains": [
+     "i-akkupack",
+     "i-lipo"
+    ],
+    "absent": [
+     "i-m4",
+     "i-fraeser"
+    ]
+   }
+  },
+  {
+   "name": "all words must match",
+   "query": "makita akkuschrauber",
+   "expect": {
+    "first": "i-akkuschrauber",
+    "exactly": [
+     "i-akkuschrauber"
+    ]
+   }
+  },
+  {
+   "name": "spec value",
+   "query": "2200",
+   "expect": {
+    "first": "i-lipo"
+   }
+  },
+  {
+   "name": "synonym filament",
+   "query": "petg",
+   "expect": {
+    "first": "i-pla"
+   }
+  },
+  {
+   "name": "notes are searched",
+   "query": "aluminium",
+   "expect": {
+    "first": "i-fraeser"
+   }
+  },
+  {
+   "name": "two letter prefix",
+   "query": "mu",
+   "expect": {
+    "contains": [
+     "i-multimeter"
+    ]
+   }
+  },
+  {
+   "name": "only some words match",
+   "query": "akku zange",
+   "expect": {
+    "contains": [
+     "i-akkupack"
+    ],
+    "all_partial": true
+   }
+  },
+  {
+   "name": "nothing found",
+   "query": "xylophon",
+   "expect": {
+    "empty": true
+   }
+  },
+  {
+   "name": "machine by name",
+   "query": "prusa",
+   "expect": {
+    "first": "m-prusa"
+   }
+  },
+  {
+   "name": "machines only",
+   "query": "",
+   "filters": {
+    "types": [
+     "machine"
+    ]
+   },
+   "expect": {
+    "exactly_unordered": [
+     "m-prusa",
+     "m-fraese"
+    ]
+   }
+  },
+  {
+   "name": "status lent",
+   "query": "",
+   "filters": {
+    "status": "lent"
+   },
+   "expect": {
+    "exactly": [
+     "i-multimeter"
+    ]
+   }
+  },
+  {
+   "name": "status in use",
+   "query": "",
+   "filters": {
+    "status": "in_use"
+   },
+   "expect": {
+    "exactly": [
+     "i-klebepistole"
+    ]
+   }
+  },
+  {
+   "name": "status inbox is an item without place",
+   "query": "",
+   "filters": {
+    "status": "inbox"
+   },
+   "expect": {
+    "exactly": [
+     "i-loetkolben"
+    ]
+   }
+  },
+  {
+   "name": "place filter includes everything below",
+   "query": "",
+   "filters": {
+    "place": "R2"
+   },
+   "expect": {
+    "contains": [
+     "i-lipo",
+     "i-fraeser",
+     "i-pla",
+     "p-r2k5",
+     "p-r2k6"
+    ],
+    "absent": [
+     "p-r2",
+     "i-m4",
+     "i-akkupack"
+    ]
+   }
+  },
+  {
+   "name": "place filter by path name and query",
+   "query": "schrauben",
+   "filters": {
+    "place": "Schublade Schrauben"
+   },
+   "expect": {
+    "contains": [
+     "i-m3",
+     "i-m4"
+    ],
+    "absent": [
+     "i-akkuschrauber"
+    ]
+   }
+  },
+  {
+   "name": "category filter includes sub-categories",
+   "query": "",
+   "filters": {
+    "category": "Werkzeug"
+   },
+   "expect": {
+    "exactly_unordered": [
+     "i-fraeser",
+     "i-akkuschrauber"
+    ]
+   }
+  },
+  {
+   "name": "tag filter on items",
+   "query": "",
+   "filters": {
+    "tag": "Makita"
+   },
+   "expect": {
+    "exactly": [
+     "i-akkuschrauber"
+    ]
+   }
+  },
+  {
+   "name": "tag filter on places",
+   "query": "",
+   "filters": {
+    "tag": "elektronik"
+   },
+   "expect": {
+    "exactly": [
+     "p-r2k6"
+    ]
+   }
+  },
+  {
+   "name": "unknown place filter",
+   "query": "",
+   "filters": {
+    "place": "Nirgendwo"
+   },
+   "expect": {
+    "empty": true,
+    "unresolved": [
+     "place"
+    ]
+   }
+  },
+  {
+   "name": "unknown category filter",
+   "query": "akku",
+   "filters": {
+    "category": "Gibtsnicht"
+   },
+   "expect": {
+    "empty": true,
+    "unresolved": [
+     "category"
+    ]
+   }
+  },
+  {
+   "name": "sz and compound spelling",
+   "query": "heißklebe",
+   "expect": {
+    "first": "i-klebepistole"
+   }
+  }
+ ]
+}
