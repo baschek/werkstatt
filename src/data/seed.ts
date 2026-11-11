@@ -20,8 +20,8 @@ function place(id: string, data: PlaceData) { add('place', id, data) }
 
 place('p-keller', { name: 'Keller', kind: 'zone' })
 place('p-wand', { name: 'Werkbank-Wand', kind: 'zone', parent_id: 'p-keller' })
-place('p-r2', { name: 'Regal R2', human_id: 'R2', kind: 'shelf', parent_id: 'p-wand', sort_order: 2 })
-place('p-r1', { name: 'Regal R1', human_id: 'R1', kind: 'shelf', parent_id: 'p-wand', sort_order: 1 })
+place('p-r2', { name: 'Regal R2', human_id: 'R2', kind: 'shelf', parent_id: 'p-wand', sort_order: 2, geometry: geo(4, 4, -2, 215, 66, 90) })
+place('p-r1', { name: 'Regal R1', human_id: 'R1', kind: 'shelf', parent_id: 'p-wand', sort_order: 1, geometry: geo(238, 4, -2, 60, 60, 92) })
 place('p-wb', { name: 'Werkbank', human_id: 'WB', kind: 'zone', parent_id: 'p-keller', geometry: geo(8, 104, 0, 176, 62, 38) })
 place('p-cnc', { name: 'Fräse (GRBL)', human_id: 'CNC', kind: 'machine', parent_id: 'p-wb', geometry: geo(18, 112, 38, 64, 46, 34) })
 place('p-prn', { name: '3D-Drucker', human_id: 'PRN', kind: 'machine', parent_id: 'p-wb', geometry: geo(112, 114, 38, 44, 40, 34) })
@@ -41,21 +41,10 @@ for (const [box, fachs] of [['p-r2-k2', [1, 2]], ['p-r2-k3', [3, 4]]] as const) 
   for (const n of fachs) place(`${box}-f${n}`, { name: `Fach ${n}`, kind: 'compartment', parent_id: box, sort_order: n })
 }
 
-// Statische Dinge: Regalböden und -pfosten (keine Orte).
-const obj = (id: string, kind: string, x: number, y: number, z: number, w: number, d: number, h: number, label?: string) => {
-  const g = geo(x, y, z, w, d, h)
-  return { id, kind, label, position: g.position, size: g.size }
-}
+// Regale sind Orte mit Geometrie (siehe oben); layout.objects bleibt für Dinge, die keine Orte sind (Wände, Säulen, Türen).
 const layout: LayoutData = {
   room: { size: [3.5, 2.4, 2.7], floor_color: '#3b7e86' },
-  objects: [
-    obj('r2-boden-unten', 'plate', 4, 4, -4, 215, 66, 4, 'Regal R2 unten'),
-    obj('r2-boden-mitte', 'plate', 4, 4, 38, 215, 66, 4, 'Regal R2 Mitte'),
-    obj('r2-pfosten-l', 'post', 4, 4, 0, 4, 4, 84),
-    obj('r2-pfosten-r', 'post', 215, 4, 0, 4, 4, 84),
-    obj('r1-boden-unten', 'plate', 238, 4, -4, 60, 60, 4, 'Regal R1 unten'),
-    obj('r1-boden-oben', 'plate', 238, 4, 86, 60, 60, 4, 'Regal R1 oben'),
-  ],
+  objects: [],
   camera: { position: [4, 4, 4], target: [1.75, 0.3, 1.35], fov: 30 },
 }
 add('layout', 'main', layout)

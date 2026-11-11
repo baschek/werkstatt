@@ -127,6 +127,34 @@ export default function Scene3D(props: SceneProps) {
       }
     }
 
+    function addFrame(pl: SceneProps['places'][number], pos: Vec3, size: Vec3, rotY: number, color: string | undefined, all: SceneProps['places']) {
+      const [px, py, pz] = pos
+      const [sw, sh, sd] = size
+      const cols: [THREE.Color, THREE.Color, THREE.Color] = color
+        ? [new THREE.Color(color), shade(color, 0.81), shade(color, 0.63)]
+        : [new THREE.Color(C.frT), new THREE.Color(C.frL), new THREE.Color(C.frR)]
+      const cos = Math.cos(rotY), sin = Math.sin(rotY)
+      // lokaler Versatz (dx, dz) um die Mitte drehen
+      const at = (dx: number, y: number, dz: number): Vec3 => [px + dx * cos + dz * sin, y, pz - dx * sin + dz * cos]
+      const post = Math.min(0.035, sw / 6, sd / 6)
+      const board = Math.min(0.02, sh / 10)
+      for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+        addBox(at(sx * (sw / 2 - post / 2), py, sz * (sd / 2 - post / 2)),
+          [post, sh, post], rotY, cols, true, pl.id + ':post', pl.data.name, '')
+      }
+      // Böden: unten plus je Höhe, auf der ein Kind-Ort steht (Ebenen ergeben sich aus den Kisten).
+      const levels = new Set<number>([py])
+      for (const c of all) {
+        if (c.data.parent_id !== pl.id) continue
+        const y = c.data.geometry?.position?.[1]
+        if (typeof y === 'number' && y > py + board && y < py + sh - board) levels.add(Math.round((y - board) * 1000) / 1000)
+      }
+      levels.delete(py)
+      for (const y of levels) addBox([px, y, pz], [sw, board, sd], rotY, cols, true, pl.id + ':board', pl.data.name, '')
+      // unterster Boden: wählbar, trägt den Kurzcode. Oben bleibt das Regal offen, damit die Kisten sichtbar sind.
+      addBox([px, py, pz], [sw, board, sd], rotY, cols, false, pl.id, pl.data.name, pl.data.human_id ?? pl.data.name)
+    }
+
     function rebuild(p: SceneProps) {
       disposeWorld()
       const room = p.layout?.room
@@ -149,12 +177,18 @@ export default function Scene3D(props: SceneProps) {
         const cols: [THREE.Color, THREE.Color, THREE.Color] = o.color ? [new THREE.Color(o.color), shade(o.color, 0.81), shade(o.color, 0.63)] : fr
         addBox(o.position, o.size, o.rotation_y ?? 0, cols, true, o.id, o.label ?? o.id, '')
       }
-      for (const pl of p.places) {
-        const g2 = pl.data.geometry
-        if (!g2?.position || !g2.size) continue
+      const geoPlaces = p.places.filter((pl) => pl.data.geometry?.position && pl.data.geometry?.size)
+      for (const pl of geoPlaces) {
+        const g2 = pl.data.geometry!
+        // Regale sind Orte mit Geometrie (Vertrag): als offener Rahmen mit Böden zeichnen, damit die Kisten
+        // darin sichtbar bleiben. Wählbar ist die oberste Platte (mit Kurzcode). Schränke bleiben geschlossene Körper.
+        if (pl.data.kind === 'shelf') {
+          addFrame(pl, g2.position!, g2.size!, g2.rotation_y ?? 0, g2.color, geoPlaces)
+          continue
+        }
         const top = g2.color ?? C.boxT
         const cols: [THREE.Color, THREE.Color, THREE.Color] = g2.color ? [new THREE.Color(top), shade(top, 0.81), shade(top, 0.63)] : [new THREE.Color(C.boxT), new THREE.Color(C.boxL), new THREE.Color(C.boxR)]
-        addBox(g2.position, g2.size, g2.rotation_y ?? 0, cols, false, pl.id, pl.data.name, pl.data.human_id ?? pl.data.name)
+        addBox(g2.position!, g2.size!, g2.rotation_y ?? 0, cols, false, pl.id, pl.data.name, pl.data.human_id ?? pl.data.name)
       }
       const b = new THREE.Box3(new THREE.Vector3(0, 0, 0), new THREE.Vector3(rw, 0.1, rd))
       b.expandByObject(world)

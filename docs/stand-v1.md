@@ -21,7 +21,8 @@
 - Nicht auf echter Hardware geprüft (1366×768 nur im Headless-Browser).
 
 ## Mit dem Backend abzustimmen
-- `geometry.position` ist hier die Mitte der Grundfläche, `y` oben, `size = [Breite, Höhe, Tiefe]`; Raumecke bei (0, 0, 0), `layout.room.size = [x, Höhe, z]`. Der Vertrag lässt das offen.
+- `geometry.position` ist die Mitte der Grundfläche, `y` oben, `size = [Breite, Höhe, Tiefe]` in Metern (so steht es im Vertrag); Raumecke bei (0, 0, 0), `layout.room.size = [x, Höhe, z]`.
+- Regale sind Orte mit Geometrie (`kind: shelf`, wie im Vertrag) und werden als offener Rahmen gezeichnet: vier Pfosten, unterer Boden (wählbar, mit Kurzcode) und ein Boden auf jeder Höhe, auf der eine Kiste des Regals steht. Schränke und alle anderen Orte bleiben geschlossene Körper. `layout.objects` nur für Dinge, die keine Orte sind (Wände, Säulen, Türen).
 - Zusätzliche Felder, die die App schreibt und der Server durchreicht: `item.quantity_approx` (bool, „~200“), `item.suggested_place_id` (Ortsvorschlag im Eingang; wer ihn setzt, ist offen: Claude oder App), `category.spec_fields[].required` (Pflichtfeld).
 - Eingang: ein Ding ohne Ort bekommt vom Client `status: "inbox"`, „Ablegen“ setzt `status: "stored"`. Der Server leitet den Status ohnehin aus dem Ort ab.
 - „Verbraucht/In Nutzung“ behält `place_id` (wie im Vertrag), `machine_id` verknüpft die Maschine.
