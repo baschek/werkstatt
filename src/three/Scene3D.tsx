@@ -107,7 +107,7 @@ export default function Scene3D(props: SceneProps) {
       const [px, py, pz] = pos
       const [sw, sh, sd] = size
       const geo = new THREE.BoxGeometry(sw, sh, sd)
-      const mk = (c: THREE.Color) => new THREE.MeshBasicMaterial({ color: c, transparent: true })
+      const mk = (c: THREE.Color) => new THREE.MeshBasicMaterial({ color: c, transparent: true, depthWrite: true })
       const [t, l, r] = cols
       // Reihenfolge: +x, -x, +y, -y, +z, -z
       const mats = [mk(r), mk(r), mk(t), mk(t), mk(l), mk(l)]
@@ -204,7 +204,7 @@ export default function Scene3D(props: SceneProps) {
         b.mats[2].color.copy(t); b.mats[3].color.copy(t)
         b.mats[4].color.copy(l); b.mats[5].color.copy(l)
         b.mats[0].color.copy(r); b.mats[1].color.copy(r)
-        for (const m of b.mats) { m.opacity = dim ? 0.42 : 1; m.depthWrite = !dim }
+        for (const m of b.mats) { m.opacity = dim ? 0.42 : 1 }
         b.label.classList.toggle('dim', dim)
       }
       updateOutline(p.selected, 2)

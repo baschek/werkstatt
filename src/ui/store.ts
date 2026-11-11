@@ -34,7 +34,7 @@ export interface UIState {
   loggedOut: boolean
   toast: string | null
   popup: Popup | null
-  phoneMore: Screen | null
+  phoneMore: Screen | 'menu' | null
   focusSearch: number
 }
 

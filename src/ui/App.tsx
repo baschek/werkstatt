@@ -244,10 +244,17 @@ function PhoneApp() {
   return (
     <div className="phone-app">
       <div className="pstat"><span>{clock}</span><span><span className={`led ${l.led}`} style={{ marginRight: 6 }} />{l.text.split(' · ')[0]}</span></div>
-      {more ? (
+      {more === 'menu' ? (
         <>
           <div className="phead" style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <button type="button" className="btn" onClick={() => setUI({ phoneMore: null })}>‹ Zurück</button><h3>{MORE.find((m) => m[0] === more)?.[1]}</h3>
+            <button type="button" className="btn" onClick={() => setUI({ phoneMore: null })}>‹ Zurück</button><h3>Mehr</h3>
+          </div>
+          <div className="pbody">{MORE.map(([k, lbl]) => <button type="button" key={k} className="row" onClick={() => setUI({ phoneMore: k })}><div className="nm">{lbl}</div><div className="qty">›</div></button>)}</div>
+        </>
+      ) : more ? (
+        <>
+          <div className="phead" style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <button type="button" className="btn" onClick={() => setUI({ phoneMore: 'menu' })}>‹ Zurück</button><h3>{MORE.find((m) => m[0] === more)?.[1]}</h3>
           </div>
           <div className="pbody"><ScreenBody screen={more} phone /></div>
         </>
@@ -257,7 +264,7 @@ function PhoneApp() {
             <div className="phead"><button type="button" className="btn" style={{ alignSelf: 'flex-start' }} onClick={() => setUI({ view: 'list', selItem: null, selPlace: null })}>‹ Zurück</button></div>
           ) : (
             <div className="phead" style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}><h3>Wo ist …?</h3>
-              <button type="button" className="btn" onClick={() => setUI({ phoneMore: 'settings' })} aria-label="Mehr">Mehr</button></div>
+              <button type="button" className="btn" onClick={() => setUI({ phoneMore: 'menu' })} aria-label="Mehr">Mehr</button></div>
           )}
           <div className="pbody"><SearchPane phone /></div>
         </>
@@ -267,11 +274,6 @@ function PhoneApp() {
           <div className="pbody"><InboxScreen phone /></div>
         </>
       ) : <PhoneNew />}
-      {!more && tab === 'search' && !detail && !placeDetail && (
-        <div style={{ padding: '0 8px 6px', display: 'flex', gap: 6, flexWrap: 'wrap', background: 'var(--bg2)' }}>
-          {MORE.map(([k, lbl]) => <button type="button" key={k} className="chip" onClick={() => setUI({ phoneMore: k })}>{lbl}</button>)}
-        </div>
-      )}
       <div className="pnav" role="tablist">
         {([['search', 'Suche', 'search'], ['new', 'Neu', 'plus'], ['inbox', 'Eingang', 'inbox']] as const).map(([k, lbl, ic]) => (
           <button type="button" key={k} role="tab" className="tab" aria-selected={tab === k && !more} onClick={() => setUI({ phoneTab: k, phoneMore: null, view: 'list', selItem: null })}>

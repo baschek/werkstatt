@@ -20,8 +20,8 @@ function place(id: string, data: PlaceData) { add('place', id, data) }
 
 place('p-keller', { name: 'Keller', kind: 'zone' })
 place('p-wand', { name: 'Werkbank-Wand', kind: 'zone', parent_id: 'p-keller' })
-place('p-r2', { name: 'Regal R2', human_id: 'R2', kind: 'shelf', parent_id: 'p-wand', sort_order: 2, geometry: geo(4, 4, -4, 215, 66, 88) })
-place('p-r1', { name: 'Regal R1', human_id: 'R1', kind: 'shelf', parent_id: 'p-wand', sort_order: 1, geometry: geo(238, 4, -4, 60, 60, 94) })
+place('p-r2', { name: 'Regal R2', human_id: 'R2', kind: 'shelf', parent_id: 'p-wand', sort_order: 2 })
+place('p-r1', { name: 'Regal R1', human_id: 'R1', kind: 'shelf', parent_id: 'p-wand', sort_order: 1 })
 place('p-wb', { name: 'Werkbank', human_id: 'WB', kind: 'zone', parent_id: 'p-keller', geometry: geo(8, 104, 0, 176, 62, 38) })
 place('p-cnc', { name: 'Fräse (GRBL)', human_id: 'CNC', kind: 'machine', parent_id: 'p-wb', geometry: geo(18, 112, 38, 64, 46, 34) })
 place('p-prn', { name: '3D-Drucker', human_id: 'PRN', kind: 'machine', parent_id: 'p-wb', geometry: geo(112, 114, 38, 44, 40, 34) })
@@ -37,9 +37,8 @@ const r1 = ['Filament', 'Druckerteile', 'Kleinwerkzeug']
 r1.forEach((name, i) => {
   place(`p-r1-k${i + 1}`, { name, human_id: `R1-K${i + 1}`, kind: 'box', parent_id: 'p-r1', sort_order: i + 1, geometry: geo(243, 9, i * 30, 50, 50, 26) })
 })
-for (const [box, n] of [['p-r2-k2', 2], ['p-r2-k3', 4]] as const) {
-  const first = box === 'p-r2-k2' ? 1 : 3
-  for (let i = 0; i < n / 2; i++) place(`${box}-f${first + i}`, { name: `Fach ${first + i}`, kind: 'compartment', parent_id: box, sort_order: first + i })
+for (const [box, fachs] of [['p-r2-k2', [1, 2]], ['p-r2-k3', [3, 4]]] as const) {
+  for (const n of fachs) place(`${box}-f${n}`, { name: `Fach ${n}`, kind: 'compartment', parent_id: box, sort_order: n })
 }
 
 // Statische Dinge: Regalböden und -pfosten (keine Orte).
@@ -123,7 +122,7 @@ const machine = (id: string, data: MachineData) => add('machine', id, data)
 machine('m-cnc', { name: 'Kleine Fräse', model: 'CNC-Fräse · GRBL 1.1', place_id: 'p-cnc', specs: {
   arbeitsbereich: '300 × 180 × 45 mm', spindel: '500 W, Spannzange ER11', steuerung: 'GRBL 1.1 über USB', zuletzt_gewartet: '02.11.2026' } })
 machine('m-prn', { name: 'FDM-Drucker', model: '3D-Drucker', place_id: 'p-prn', specs: {
-  bauraum: '220 × 220 × 250 mm', duese: '0,4 mm', heizbett: 'bis 100 °C', zuletzt_gewartet: '20.10.2026' } })
+  bauraum: '220 × 220 × 250 mm', düse: '0,4 mm', heizbett: 'bis 100 °C', zuletzt_gewartet: '20.10.2026' } })
 
 export const SEED_DOCS: Doc[] = out
 export const SEED_REV = rev

@@ -24,7 +24,8 @@ export function ExplorerScreen({ phone }: { phone?: boolean }) {
   const [over, setOver] = useState<string | null>(null)
   const [picked, setPicked] = useState<Set<string>>(new Set())
   const lastPicked = useRef<string | null>(null)
-  const selPlace = ui.explorerSel?.entity === 'place' ? ui.explorerSel.id : ui.selPlace && cat.places.has(ui.selPlace) ? ui.selPlace : null
+  const firstFilled = [...cat.places.values()].find((p) => cat.itemsIn(p.id).length > 0 && p.data.human_id)?.id ?? null
+  const selPlace = ui.explorerSel?.entity === 'place' ? ui.explorerSel.id : ui.selPlace && cat.places.has(ui.selPlace) ? ui.selPlace : firstFilled
   const inboxSel = ui.explorerSel?.id === '__inbox'
   const current = inboxSel ? null : selPlace ?? cat.children(null)[0]?.id ?? null
   const items = inboxSel ? [...cat.items.values()].filter((i) => cat.effectiveStatus(i) === 'inbox') : current ? cat.itemsIn(current) : []
@@ -127,7 +128,7 @@ export function ExplorerScreen({ phone }: { phone?: boolean }) {
           <div style={{ padding: 8 }}><button type="button" className="btn" onClick={() => setUI({ popup: { kind: 'place', id: null, parent: current } })}>＋ Neuer Ort</button></div>
         </div>
         <div onKeyDown={itemKeys} data-itemlist>
-          <div className="sec" style={{ padding: '8px 8px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="sec" style={{ padding: '8px 8px 0', display: 'flex', flexDirection: 'column', gap: 6 }}>
             <span>{inboxSel ? 'Eingang' : place ? `${place.data.human_id ?? ''} · ${place.data.name}` : ''}</span>
             {place && !inboxSel && <span style={{ display: 'flex', gap: 4 }}>
               <button type="button" className="btn" onClick={() => openPlace(place.id)}>Öffnen</button>
@@ -155,7 +156,7 @@ export function CategoriesScreen({ phone }: { phone?: boolean }) {
   const repo = useRepoState()
   const roots = [...cat.categories.values()].filter((c) => !c.data.parent_id || !cat.categories.has(c.data.parent_id))
   const kids = (id: string) => [...cat.categories.values()].filter((c) => c.data.parent_id === id).sort((a, b) => a.data.name.localeCompare(b.data.name, 'de'))
-  const sel = (ui.categorySel && cat.categories.get(ui.categorySel)) || roots[0]
+  const sel = (ui.categorySel && cat.categories.get(ui.categorySel)) || [...cat.categories.values()].find((c) => (c.data.spec_fields?.length ?? 0) > 0) || roots[0]
   const count = (id: string) => { const s = cat.categorySubtreeIds(id); return [...cat.items.values()].filter((i) => s.has(i.data.category_id ?? '')).length }
   const rows: { id: string; d: number }[] = []
   const walk = (id: string, d: number) => { rows.push({ id, d }); kids(id).forEach((k) => walk(k.id, d + 1)) }
@@ -176,7 +177,7 @@ export function CategoriesScreen({ phone }: { phone?: boolean }) {
   return (
     <>
       {!phone && <div className="ph"><span>Kategorien &amp; Tags</span><span className="kb">{cat.categories.size} Kategorien · {tags.length} Tags</span></div>}
-      <div className="two" style={phone ? { gridTemplateColumns: '1fr', gridTemplateRows: 'auto 1fr' } : undefined}>
+      <div className="two" style={phone ? { gridTemplateColumns: '1fr', gridTemplateRows: 'auto 1fr' } : { gridTemplateColumns: 'minmax(0,.7fr) minmax(0,1.3fr)' }}>
         <div onKeyDown={listKeys}>
           {rows.map(({ id, d }) => {
             const c = cat.categories.get(id)!
@@ -271,7 +272,7 @@ export function NoticeCard({ n }: { n: Notice }) {
       <span className="muted" style={{ color: 'var(--ink)' }}>Behalten wurde: {n.winner === 'mine' ? me : other} (neuere Änderung). {dateDe(n.at)}</span>
       <div className="acts">
         <button type="button" className="btn" onClick={() => (n.winner === 'mine' ? repo.dismissNotice(n) : restore(n.mine as never))}>{me} behalten</button>
-        <button type="button" className="btn pri" onClick={() => (n.winner === 'theirs' ? repo.dismissNotice(n) : restore(n.theirs as never))}>{other} übernehmen</button>
+        <button type="button" className="btn pri" onClick={() => (n.winner === 'theirs' ? repo.dismissNotice(n) : restore(n.theirs as never))}>{other.charAt(0).toUpperCase() + other.slice(1)} übernehmen</button>
       </div>
     </div>
   )

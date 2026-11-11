@@ -60,7 +60,7 @@ export class SyncEngine {
       do {
         this.again = false
         await this.once()
-      } while (this.again && this.state.health === 'ok')
+      } while (this.again)
     })().finally(() => { this.running = null })
     return this.running
   }

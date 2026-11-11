@@ -22,7 +22,7 @@ export function useSync(): SyncState {
 
 export function useSearch(query: string, status: ItemStatus | null): SearchResult[] {
   const cat = useCatalog()
-  return useMemo(() => search(cat, query, { status, limit: 200, types: status ? ['item'] : ['item', 'place', 'machine'] }).results, [cat, query, status])
+  return useMemo(() => search(cat, query, { status, limit: 200, types: status || !query.trim() ? ['item'] : ['item', 'place', 'machine'] }).results, [cat, query, status])
 }
 
 export function useMedia(q: string): boolean {
