@@ -10,8 +10,9 @@ function add<E extends Entity>(entity: E, id: string, data: AnyData, extra: Part
 }
 
 /** Prototyp-Zentimeter (x, Tiefe, Höhe, Breite, Tiefe, Höhe) in Geometrie. */
+const OFF = 20 // Prototyp-Ursprung liegt 20 cm vor der Raumecke
 const geo = (x: number, y: number, z: number, w: number, d: number, h: number) => ({
-  position: [(x + w / 2) / 100, z / 100, (y + d / 2) / 100] as [number, number, number],
+  position: [(x + OFF + w / 2) / 100, z / 100, (y + OFF + d / 2) / 100] as [number, number, number],
   size: [w / 100, h / 100, d / 100] as [number, number, number],
 })
 
@@ -47,7 +48,7 @@ const obj = (id: string, kind: string, x: number, y: number, z: number, w: numbe
   return { id, kind, label, position: g.position, size: g.size }
 }
 const layout: LayoutData = {
-  room: { size: [3.4, 2.4, 2.7], floor_color: '#3b7e86' },
+  room: { size: [3.5, 2.4, 2.7], floor_color: '#3b7e86' },
   objects: [
     obj('r2-boden-unten', 'plate', 4, 4, -4, 215, 66, 4, 'Regal R2 unten'),
     obj('r2-boden-mitte', 'plate', 4, 4, 38, 215, 66, 4, 'Regal R2 Mitte'),
@@ -56,7 +57,7 @@ const layout: LayoutData = {
     obj('r1-boden-unten', 'plate', 238, 4, -4, 60, 60, 4, 'Regal R1 unten'),
     obj('r1-boden-oben', 'plate', 238, 4, 86, 60, 60, 4, 'Regal R1 oben'),
   ],
-  camera: { position: [4, 4, 4], target: [1.5, 0.3, 1.2], fov: 30 },
+  camera: { position: [4, 4, 4], target: [1.75, 0.3, 1.35], fov: 30 },
 }
 add('layout', 'main', layout)
 
